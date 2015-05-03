@@ -7,11 +7,11 @@ Visithor
 [![Latest Unstable Version](https://poser.pugx.org/visithor/visithor/v/unstable.png)](https://packagist.org/packages/visithor/visithor)
 
 
-Define a set of urls with their expected response HTTP codes and test them all
-with a single command.
+Visithor is a PHP library that provides you a simple and painless way of testing 
+your application routes with specific HTTP Codes.
 
 Of course this project not pretends to avoid the need of unit, functional or
-behavioral tests, it is only a fast and painless way of ensuring your routes
+behavioral tests, it is only a fast and easy way of ensuring that your routes
 are still available over the time.
 
 ## Tags
