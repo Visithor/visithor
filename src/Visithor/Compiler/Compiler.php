@@ -299,13 +299,13 @@ EOF;
     private function loadVersion()
     {
         $process = new Process('git log --pretty="%H" -n1 HEAD', __DIR__);
-        if ($process->run() != 0) {
+        if ($process->run() !== 0) {
             throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from visithor git repository clone and that git binary is available.');
         }
         $this->version = trim($process->getOutput());
 
         $process = new Process('git log -n1 --pretty=%ci HEAD', __DIR__);
-        if ($process->run() != 0) {
+        if ($process->run() !== 0) {
             throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from visithor git repository clone and that git binary is available.');
         }
         $date = new \DateTime(trim($process->getOutput()));
@@ -313,7 +313,7 @@ EOF;
         $this->versionDate = $date->format('Y-m-d H:i:s');
 
         $process = new Process('git describe --tags HEAD');
-        if ($process->run() == 0) {
+        if ($process->run() === 0) {
             $this->version = trim($process->getOutput());
         }
 

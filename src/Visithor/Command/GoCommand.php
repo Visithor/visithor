@@ -120,7 +120,7 @@ class GoCommand extends Command
      */
     protected function executeVisithor(
         OutputInterface $output,
-        $config,
+        array $config,
         $format
     ) {
         $urlGenerator = new UrlGenerator(

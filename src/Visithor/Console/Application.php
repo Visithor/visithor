@@ -14,6 +14,7 @@
 namespace Visithor\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\Command as ConsoleCommand;
 
 use Visithor\Command;
 
@@ -41,6 +42,8 @@ class Application extends BaseApplication
 
     /**
      * Initializes all the composer commands
+     *
+     * @return ConsoleCommand[] Array of commands
      */
     protected function getDefaultCommands()
     {
