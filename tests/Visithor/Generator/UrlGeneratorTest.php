@@ -11,12 +11,13 @@
  * @author Marc Morera <yuhu@mmoreram.com>
  */
 
-namespace Mmoreram\Tests\Visithor\Generator;
+namespace Mmoreram\tests\Visithor\Generator;
 
-use Visithor\Generator\UrlGenerator;
+use PHPUnit_Framework_TestCase;
+
 use Visithor\Factory\UrlChainFactory;
 use Visithor\Factory\UrlFactory;
-use PHPUnit_Framework_TestCase;
+use Visithor\Generator\UrlGenerator;
 use Visithor\Model\Url;
 
 /**
@@ -83,59 +84,89 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
             [
                 [
                     'defaults' => '',
-                    'urls'     => ['/url']
+                    'urls'     => [
+                        ['/url'],
+                    ],
                 ],
-                [200]
+                [200],
             ],
             [
                 [
                     'defaults' => [],
-                    'urls'     => ['/url']
+                    'urls'     => [
+                        ['/url'],
+                    ],
                 ],
-                [200]
+                [200],
             ],
             [
                 [
                     'defaults' => [
                         'http_codes' => [
 
-                        ]
+                        ],
                     ],
-                    'urls'     => ['/url']
+                    'urls'     => [
+                        ['/url'],
+                    ],
                 ],
-                [200]
+                [200],
             ],
             [
                 [
                     'defaults' => [
                         'http_codes' => [
-                            304
-                        ]
+                            304,
+                        ],
                     ],
-                    'urls'     => ['/url']
+                    'urls'     => [
+                        ['/url'],
+                    ],
                 ],
-                [304]
+                [304],
             ],
             [
                 [
                     'defaults' => [
-                        'http_codes' => 304
+                        'http_codes' => 304,
                     ],
-                    'urls'     => ['/url']
+                    'urls'     => [
+                        ['/url'],
+                    ],
                 ],
-                [304]
+                [304],
             ],
             [
-                ['urls' => ['/url']],
-                [200]
+                [
+                    'urls' => [
+                        ['/url'],
+                    ],
+                ],
+                [200],
             ],
             [
-                ['urls' => ['/url', 200]],
-                [200]
+                [
+                    'urls' => [
+                        ['/url', 200],
+                    ],
+                ],
+                [200],
             ],
             [
-                ['urls' => ['/url', [200]]],
-                [200]
+                [
+                    'urls' => [
+                        ['/url', [200]],
+                    ],
+                ],
+                [200],
+            ],
+            [
+                [
+                    'urls' => [
+                        ['/url', []],
+                    ],
+                ],
+                [200],
             ],
         ];
     }
@@ -171,15 +202,15 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
         return [
             [
                 [
-                    'urls' => ['/url']
+                    'urls' => ['/url'],
                 ],
-                '/url'
+                '/url',
             ],
             [
                 [
-                    'urls' => [['/url']]
+                    'urls' => [['/url']],
                 ],
-                '/url'
+                '/url',
             ],
         ];
     }

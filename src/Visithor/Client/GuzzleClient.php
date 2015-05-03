@@ -13,9 +13,11 @@
 
 namespace Visithor\Client;
 
+use Exception;
 use GuzzleHttp\Client;
 
 use Visithor\Client\Interfaces\ClientInterface;
+use Visithor\Model\Url;
 
 /**
  * Class GuzzleClient
@@ -34,21 +36,29 @@ class GuzzleClient implements ClientInterface
      */
     public function __construct()
     {
-        $this->client = new Client();
+        $this->client = new Client(
+            ['redirect.disable' => true]
+        );
     }
 
     /**
-     * Get the HTTP Code Response given an url
+     * Get the HTTP Code Response given an URL instance
      *
-     * @param string $url Url
+     * @param Url $url Url
      *
      * @return int Response HTTP Code
      */
-    public function getResponseHTTPCode($url)
+    public function getResponseHTTPCode(Url $url)
     {
-        return $this
-            ->client
-            ->get($url)
-            ->getStatusCode();
+        try {
+            $result = $this
+                ->client
+                ->get($url->getPath())
+                ->getStatusCode();
+        } catch (Exception $e) {
+            $result = 1;
+        }
+
+        return $result;
     }
 }

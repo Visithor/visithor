@@ -11,7 +11,7 @@
  * @author Marc Morera <yuhu@mmoreram.com>
  */
 
-namespace Mmoreram\src\Visithor\Renderer;
+namespace Visithor\Renderer;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,10 +26,10 @@ class PrettyRenderer implements RendererInterface
     /**
      * Renders an URL execution
      *
-     * @param OutputInterface $output Output
-     * @param Url     $url      Url
-     * @param string  $HTTPCode Returned HTTP Code
-     * @param boolean $success  Successfully executed
+     * @param OutputInterface $output   Output
+     * @param Url             $url      Url
+     * @param string          $HTTPCode Returned HTTP Code
+     * @param boolean         $success  Successfully executed
      *
      * @return $this Self object
      */
@@ -38,11 +38,14 @@ class PrettyRenderer implements RendererInterface
         Url $url,
         $HTTPCode,
         $success
-    )
-    {
+    ) {
         $content = $success
-            ? 'OK'
-            : 'FAIL';
+            ? '<bg=green> OK </bg=green>'
+            : '<bg=red> FAIL </bg=green>';
+
+        $HTTPCode = (200 == $HTTPCode)
+            ? '<fg=green>200</fg=green>'
+            : $HTTPCode;
 
         $output->writeln('[' . $HTTPCode . '] ' . $url->getPath() . ' -- ' . $content);
 

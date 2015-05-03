@@ -11,14 +11,14 @@
  * @author Marc Morera <yuhu@mmoreram.com>
  */
 
-namespace Mmoreram\src\Visithor\Command;
+namespace Visithor\Command;
 
 use Exception;
-use Mmoreram\src\Visithor\Renderer\RendererFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 use Visithor\Client\GuzzleClient;
 use Visithor\Executor\Executor;
@@ -26,6 +26,7 @@ use Visithor\Factory\UrlChainFactory;
 use Visithor\Factory\UrlFactory;
 use Visithor\Generator\UrlGenerator;
 use Visithor\Reader\YamlConfigurationReader;
+use Visithor\Renderer\RendererFactory;
 use Visithor\Visithor;
 
 /**
@@ -60,10 +61,12 @@ class GoCommand extends Command
     /**
      * Execute command
      *
+     * This method returns 0 if all executions passed. 1 otherwise.
+     *
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
      *
-     * @return int|null|void
+     * @return integer Execution return
      *
      * @throws Exception
      */
@@ -75,6 +78,51 @@ class GoCommand extends Command
         $reader = new YamlConfigurationReader();
         $config = $reader->read($configPath);
 
+        if (!$config) {
+            $output->writeln('Configuration file not found in ' . $configPath);
+
+            return 1;
+        }
+
+        $output->writeln('Visithor by Marc Morera and contributors.');
+        $output->writeln('');
+        $output->writeln('Configuration read from ' . $configPath);
+        $output->writeln('');
+        $output->writeln('');
+
+        $stopwatch = new Stopwatch();
+        $stopwatch->start('visithor.go');
+
+        $result = $this->executeVisithor(
+            $output,
+            $config,
+            $format
+        );
+
+        $event = $stopwatch->stop('visithor.go');
+        $output->writeln('');
+        $memory = round($event->getMemory() / 1048576, 2);
+        $output->writeln('Time: ' . $event->getDuration() . ' ms, Memory: ' . $memory . 'Mb');
+
+        return $result;
+    }
+
+    /**
+     * Executes all business logic inside this command
+     *
+     * This method returns 0 if all executions passed. 1 otherwise.
+     *
+     * @param OutputInterface $output Output
+     * @param array           $config Config
+     * @param string          $format Format
+     *
+     * @return integer Execution return
+     */
+    protected function executeVisithor(
+        OutputInterface $output,
+        $config,
+        $format
+    ) {
         $urlGenerator = new UrlGenerator(
             new UrlFactory(),
             new UrlChainFactory()
@@ -82,12 +130,11 @@ class GoCommand extends Command
         $urlChain = $urlGenerator->generate($config);
 
         $client = new GuzzleClient();
-        $executor = new Executor();
         $rendererFactory = new RendererFactory();
         $renderer = $rendererFactory->create($format);
+        $executor = new Executor($client);
 
         $executor->execute(
-            $client,
             $urlChain,
             $renderer,
             $output

@@ -27,13 +27,29 @@ use Visithor\Renderer\Interfaces\RendererInterface;
 class Executor implements ExecutorInterface
 {
     /**
-     * Given a Client, an UrlChain instance and a renderer, executes all urls
-     * and renders the result.
+     * @var ClientInterface
+     *
+     * Client
+     */
+    protected $client;
+
+    /**
+     * Construct
+     *
+     * @param ClientInterface $client Client
+     */
+    public function __construct(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Renders the output of the result of executing some urls given a client
+     * instance
      *
      * If all urls are executed as expected, then the result of the operation
      * will be 0. Otherwise, the result will be 1.
      *
-     * @param ClientInterface   $client   Client
      * @param UrlChain          $urlChain Url chain
      * @param RendererInterface $renderer Renderer
      * @param OutputInterface   $output   Output
@@ -41,18 +57,15 @@ class Executor implements ExecutorInterface
      * @return int Result of the execution
      */
     public function execute(
-        ClientInterface $client,
         UrlChain $urlChain,
         RendererInterface $renderer,
         OutputInterface $output
-    )
-    {
+    ) {
         $result = 0;
 
         foreach ($urlChain->getUrls() as $url) {
-
             $result = $result | $this->executeUrl(
-                    $client,
+                    $this->client,
                     $url,
                     $renderer,
                     $output
@@ -75,24 +88,25 @@ class Executor implements ExecutorInterface
      *
      * @return boolean Result of the execution
      */
-    public function executeUrl(
+    protected function executeUrl(
         ClientInterface $client,
         Url $url,
         RendererInterface $renderer,
         OutputInterface $output
-    )
-    {
+    ) {
         $resultHTTPCode = $client->getResponseHTTPCode($url);
         $resultExecution = in_array(
             $resultHTTPCode,
             $url->getAcceptableHttpCodes()
-        );
+        )
+            ? 0
+            : 1;
 
         $renderer->render(
             $output,
             $url,
             $resultHTTPCode,
-            $resultExecution
+            (0 === $resultExecution)
         );
 
         return $resultExecution;

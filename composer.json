@@ -14,11 +14,18 @@
         "php": ">=5.4",
         "symfony/yaml": "~2.1",
         "symfony/console": "~2.1",
+        "symfony/stopwatch": "~2.1",
+
         "guzzlehttp/guzzle": "~5.2"
     },
     "require-dev": {
-        "phpunit/phpunit": ">=3.7"
+        "fabpot/php-cs-fixer": "1.4.2",
+        "mmoreram/php-formatter": "1.0.4",
+        "phpunit/phpunit": "4.5.0"
     },
+    "bin": [
+        "bin/visithor"
+    ],
     "config": {
         "bin-dir": "bin"
     },
@@ -32,7 +39,7 @@
             "Visithor\\Tests\\": "tests/Visithor"
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "0.1-dev"

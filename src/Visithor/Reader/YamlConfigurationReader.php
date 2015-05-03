@@ -15,25 +15,52 @@ namespace Visithor\Reader;
 
 use Symfony\Component\Yaml\Parser as YamlParser;
 
-use Visithor\Reader\Interfaces\ConfigurationReaderInterface;
 use Visithor\Visithor;
 
 /**
  * Class YamlConfigurationReader
  */
-class YamlConfigurationReader implements ConfigurationReaderInterface
+class YamlConfigurationReader
 {
     /**
-     * Read all the configuration given a source
+     * Read all the configuration given a path
      *
      * @param string $path Path
      *
-     * @return array Configuration
+     * @return array|false Configuration loaded or false if file not exists
      */
     public function read($path)
     {
-        $configFilePath = rtrim($path, '/') . '/' . Visithor::CONFIG_FILE_NAME;
-        $config = array();
+        $config = $this
+            ->readByFilename(
+                $path,
+                Visithor::CONFIG_FILE_NAME_DISTR
+            );
+
+        if (false === $config) {
+            $config = $this
+                ->readByFilename(
+                    $path,
+                    Visithor::CONFIG_FILE_NAME
+                );
+        }
+
+        return $config;
+    }
+
+    /**
+     * Read all the configuration given a path and a filename
+     *
+     * @param string $path     Path
+     * @param string $filename File name
+     *
+     *
+     * @return array Configuration
+     */
+    public function readByFilename($path, $filename)
+    {
+        $config = false;
+        $configFilePath = rtrim($path, '/') . '/' . $filename;
 
         if (is_file($configFilePath)) {
             $yamlParser = new YamlParser();
@@ -42,6 +69,4 @@ class YamlConfigurationReader implements ConfigurationReaderInterface
 
         return $config;
     }
-
-
 }

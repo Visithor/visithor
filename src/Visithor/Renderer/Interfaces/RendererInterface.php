@@ -25,10 +25,10 @@ interface RendererInterface
     /**
      * Renders an URL execution
      *
-     * @param OutputInterface $output Output
-     * @param Url $url Url
-     * @param string $HTTPCode Returned HTTP Code
-     * @param boolean $success Successfully executed
+     * @param OutputInterface $output   Output
+     * @param Url             $url      Url
+     * @param string          $HTTPCode Returned HTTP Code
+     * @param boolean         $success  Successfully executed
      *
      * @return $this Self object
      */

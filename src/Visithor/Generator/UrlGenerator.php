@@ -43,11 +43,10 @@ class UrlGenerator
      * @param UrlFactory      $urlFactory      Url factory
      * @param UrlChainFactory $urlChainFactory UrlChain factory
      */
-    function __construct(
+    public function __construct(
         UrlFactory $urlFactory,
         UrlChainFactory $urlChainFactory
-    )
-    {
+    ) {
         $this->urlFactory = $urlFactory;
         $this->urlChainFactory = $urlChainFactory;
     }
@@ -88,7 +87,6 @@ class UrlGenerator
             : [200];
 
         if (!is_array($defaultHttpCodes)) {
-
             $defaultHttpCodes = [$defaultHttpCodes];
         }
 
@@ -107,8 +105,7 @@ class UrlGenerator
     protected function createUrlChainFromConfig(
         array $config,
         array $defaultHTTPCodes
-    )
-    {
+    ) {
         $urlChain = $this
             ->urlChainFactory
             ->create();
@@ -117,12 +114,10 @@ class UrlGenerator
             !isset($config['urls']) ||
             !is_array($config['urls'])
         ) {
-
             return $urlChain;
         }
 
         foreach ($config['urls'] as $urlConfig) {
-
             $urlChain->addUrl(
                 $this->getURLInstanceFromConfig(
                     $urlConfig,
@@ -142,16 +137,13 @@ class UrlGenerator
      *
      * @return URL Url instance
      */
-    protected function getURLInstanceFromConfig(
+    protected function getUrlInstanceFromConfig(
         $urlConfig,
         array $defaultHTTPCodes
-    )
-    {
-        $url = is_array($urlConfig)
-            ? $urlConfig[0]
-            : $urlConfig;
+    ) {
+        $url = $this->getUrlPathFromConfig($urlConfig);
 
-        $urlHTTPCodes = $this->getURLHTTPCodesFromConfig(
+        $urlHTTPCodes = $this->getUrlHTTPCodesFromConfig(
             $urlConfig,
             $defaultHTTPCodes
         );
@@ -165,6 +157,20 @@ class UrlGenerator
     }
 
     /**
+     * Build the url given the configuration data
+     *
+     * @param mixed $urlConfig Url configuration
+     *
+     * @return string Route path
+     */
+    protected function getUrlPathFromConfig($urlConfig)
+    {
+        return is_array($urlConfig)
+            ? $urlConfig[0]
+            : $urlConfig;
+    }
+
+    /**
      * Get url HTTP Codes given its configuration
      *
      * @param mixed    $urlConfig        Url configuration
@@ -172,14 +178,14 @@ class UrlGenerator
      *
      * @return string[] Set of HTTP Codes
      */
-    protected function getURLHTTPCodesFromConfig(
+    protected function getUrlHTTPCodesFromConfig(
         $urlConfig,
         array $defaultHTTPCodes
-    )
-    {
+    ) {
         $HTTPCodes = (
             is_array($urlConfig) &&
-            isset($urlConfig[1])
+            isset($urlConfig[1]) &&
+            !empty($urlConfig[1])
         )
             ? $urlConfig[1]
             : $defaultHTTPCodes;

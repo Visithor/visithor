@@ -11,7 +11,7 @@
  * @author Marc Morera <yuhu@mmoreram.com>
  */
 
-namespace Mmoreram\src\Visithor\Renderer;
+namespace Visithor\Renderer;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,10 +27,10 @@ class DotRenderer implements RendererInterface
     /**
      * Renders an URL execution
      *
-     * @param OutputInterface $output Output
-     * @param Url     $url      Url
-     * @param string  $HTTPCode Returned HTTP Code
-     * @param boolean $success  Successfully executed
+     * @param OutputInterface $output   Output
+     * @param Url             $url      Url
+     * @param string          $HTTPCode Returned HTTP Code
+     * @param boolean         $success  Successfully executed
      *
      * @return $this Self object
      */
@@ -39,8 +39,7 @@ class DotRenderer implements RendererInterface
         Url $url,
         $HTTPCode,
         $success
-    )
-    {
+    ) {
         $content = $success
             ? '.'
             : 'F';

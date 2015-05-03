@@ -1,4 +1,7 @@
 vendor
+/bin/*
+!/bin/compile
+!/bin/visithor
 composer.phar
 composer.lock
 phpunit.xml

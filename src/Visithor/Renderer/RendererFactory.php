@@ -11,7 +11,7 @@
  * @author Marc Morera <yuhu@mmoreram.com>
  */
 
-namespace Mmoreram\src\Visithor\Renderer;
+namespace Visithor\Renderer;
 
 use Visithor\Renderer\Interfaces\RendererInterface;
 use Visithor\Visithor;
@@ -31,7 +31,6 @@ class RendererFactory
     public function create($type)
     {
         if ($type === Visithor::RENDERER_TYPE_DOT) {
-
             return new DotRenderer();
         }
 

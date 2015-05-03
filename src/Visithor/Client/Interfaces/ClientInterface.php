@@ -13,17 +13,19 @@
 
 namespace Visithor\Client\Interfaces;
 
+use Visithor\Model\Url;
+
 /**
  * Interface ClientInterface
  */
 interface ClientInterface
 {
     /**
-     * Get the HTTP Code Response given an url
+     * Get the HTTP Code Response given an URL instance
      *
-     * @param string $url Url
+     * @param Url $url Url
      *
      * @return int Response HTTP Code
      */
-    public function getResponseHTTPCode($url);
+    public function getResponseHTTPCode(Url $url);
 }

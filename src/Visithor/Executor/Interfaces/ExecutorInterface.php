@@ -15,7 +15,6 @@ namespace Visithor\Executor\Interfaces;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Visithor\Client\Interfaces\ClientInterface;
 use Visithor\Model\UrlChain;
 use Visithor\Renderer\Interfaces\RendererInterface;
 
@@ -25,21 +24,19 @@ use Visithor\Renderer\Interfaces\RendererInterface;
 interface ExecutorInterface
 {
     /**
-     * Given a Client, an UrlChain instance and a renderer, executes all urls
-     * and renders the result.
+     * Renders the output of the result of executing some urls given a client
+     * instance
      *
      * If all urls are executed as expected, then the result of the operation
      * will be 0. Otherwise, the result will be 1.
      *
-     * @param ClientInterface   $client   Client
      * @param UrlChain          $urlChain Url chain
      * @param RendererInterface $renderer Renderer
-     * @param OutputInterface $output Output
+     * @param OutputInterface   $output   Output
      *
      * @return int Result of the execution
      */
     public function execute(
-        ClientInterface   $client,
         UrlChain $urlChain,
         RendererInterface $renderer,
         OutputInterface $output

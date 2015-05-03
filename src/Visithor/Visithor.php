@@ -26,16 +26,23 @@ class Visithor
     const CONFIG_FILE_NAME = 'visithor.yml';
 
     /**
-     * @var integer
+     * @var string
+     *
+     * Configuration file
+     */
+    const CONFIG_FILE_NAME_DISTR = 'visithor.yml.dist';
+
+    /**
+     * @var string
      *
      * Renderer type dot
      */
-    const RENDERER_TYPE_DOT = 1;
+    const RENDERER_TYPE_DOT = 'dots';
 
     /**
-     * @var integer
+     * @var string
      *
      * Renderer type pretty
      */
-    const RENDERER_TYPE_PRETTY = 2;
+    const RENDERER_TYPE_PRETTY = 'pretty';
 }
