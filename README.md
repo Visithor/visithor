@@ -1,7 +1,7 @@
 Visithor
 ========
 
-[![Build Status](https://travis-ci.org/visithor/visithor.png?branch=master)](https://travis-ci.org/visithor/visithor)
+[![Build Status](https://travis-ci.org/Visithor/visithor.png?branch=master)](https://travis-ci.org/Visithor/visithor)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/visithor/visithor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/visithor/visithor/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/visithor/visithor/v/stable.png)](https://packagist.org/packages/visithor/visithor)
 [![Latest Unstable Version](https://poser.pugx.org/visithor/visithor/v/unstable.png)](https://packagist.org/packages/visithor/visithor)
