@@ -39,15 +39,15 @@ class PrettyRenderer implements RendererInterface
         $HTTPCode,
         $success
     ) {
-        $content = $success
-            ? '<bg=green> OK </bg=green>'
-            : '<bg=red> FAIL </bg=green>';
+        $color = $success
+            ? '<bg=green>  </bg=green>'
+            : '<bg=red>  </bg=red>';
 
         $HTTPCode = (200 == $HTTPCode)
             ? '<fg=green>200</fg=green>'
             : $HTTPCode;
 
-        $output->writeln('[' . $HTTPCode . '] ' . $url->getPath() . ' -- ' . $content);
+        $output->writeln($color . ' [' . $HTTPCode . '] ' . $url->getPath());
 
         return $this;
     }
