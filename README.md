@@ -73,6 +73,13 @@ You can copy the `.phar` file as a global script
 $ cp build/visithor.phar /usr/local/bin/visithor
 ```
 
+## Frameworks
+
+You can find some packages that will provide you some integration between
+Visithor and them.
+
+* [VisithorBundle for Symfony](http://github.com/visithor/VisithorBundle)
+
 ## Config
 
 Visithor uses the yml configuration format for your url definitions. This is the

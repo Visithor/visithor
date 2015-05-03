@@ -78,7 +78,7 @@ class GoCommand extends Command
         $reader = new YamlConfigurationReader();
         $config = $reader->read($configPath);
 
-        if (!$config) {
+        if (!$config || !is_array($config)) {
             $output->writeln('Configuration file not found in ' . $configPath);
 
             return 1;
