@@ -63,6 +63,10 @@ class Executor implements ExecutorInterface
     ) {
         $result = 0;
 
+        $this
+            ->client
+            ->buildClient();
+
         foreach ($urlChain->getUrls() as $url) {
             $result = $result | $this->executeUrl(
                     $this->client,
@@ -71,6 +75,10 @@ class Executor implements ExecutorInterface
                     $output
                 );
         }
+
+        $this
+            ->client
+            ->destroyClient();
 
         return $result;
     }

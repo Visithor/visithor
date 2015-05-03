@@ -42,6 +42,14 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
             ->getResponseHTTPCode(Argument::any())
             ->willReturn(200);
 
+        $client
+            ->buildClient(Argument::any())
+            ->willReturn(Argument::any());
+
+        $client
+            ->destroyClient(Argument::any())
+            ->willReturn(Argument::any());
+
         $urlChain = new UrlChain();
         $urlChain
             ->addUrl(new Url('', $firstStatusCode))

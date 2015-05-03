@@ -21,6 +21,13 @@ use Visithor\Model\Url;
 interface ClientInterface
 {
     /**
+     * Build client
+     *
+     * @return $this Self object
+     */
+    public function buildClient();
+
+    /**
      * Get the HTTP Code Response given an URL instance
      *
      * @param Url $url Url
@@ -28,4 +35,11 @@ interface ClientInterface
      * @return int Response HTTP Code
      */
     public function getResponseHTTPCode(Url $url);
+
+    /**
+     * Destroy client
+     *
+     * @return $this Self object
+     */
+    public function destroyClient();
 }

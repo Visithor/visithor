@@ -32,9 +32,11 @@ class GuzzleClient implements ClientInterface
     protected $client;
 
     /**
-     * Construct
+     * Build client
+     *
+     * @return $this Self object
      */
-    public function __construct()
+    public function buildClient()
     {
         $this->client = new Client(
             ['redirect.disable' => true]
@@ -60,5 +62,15 @@ class GuzzleClient implements ClientInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Destroy client
+     *
+     * @return $this Self object
+     */
+    public function destroyClient()
+    {
+        unset($this->client);
     }
 }
