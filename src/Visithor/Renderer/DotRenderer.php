@@ -41,8 +41,8 @@ class DotRenderer implements RendererInterface
         $success
     ) {
         $content = $success
-            ? '.'
-            : 'F';
+            ? '<fg=green>.</fg=green>'
+            : '<fg=red>F</fg=red>';
 
         $output->write($content);
 
