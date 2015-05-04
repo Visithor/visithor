@@ -47,7 +47,9 @@ class PrettyRenderer implements RendererInterface
             ? '<fg=green>200</fg=green>'
             : $HTTPCode;
 
-        $output->writeln($color . ' [' . $HTTPCode . '] ' . $url->getPath());
+        $options = '<fg=cyan>' . json_encode($url->getOptions()) . '</fg=cyan>';
+
+        $output->writeln($color . ' [' . $HTTPCode . '] ' . $url->getPath() . ' ' . $options);
 
         return $this;
     }

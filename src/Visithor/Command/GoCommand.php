@@ -141,7 +141,7 @@ class GoCommand extends Command
         $renderer = $rendererFactory->create($format);
         $executor = new Executor($client);
 
-        $executor->execute(
+        return $executor->execute(
             $urlChain,
             $renderer,
             $output

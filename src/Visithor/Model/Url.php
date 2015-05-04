@@ -13,7 +13,6 @@
 
 namespace Visithor\Model;
 
-
 /**
  * Class Url
  */
