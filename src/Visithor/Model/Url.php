@@ -28,20 +28,32 @@ class Url
     /**
      * @var string[]
      *
-     * Set of HTTP Codes
+     * Set of Acceptable HTTP Codes
      */
-    protected $httpCodes;
+    protected $acceptableHTTPCodes;
+
+    /**
+     * @var array
+     *
+     * Options
+     */
+    protected $options;
 
     /**
      * Construct
      *
-     * @param string   $path      Path
-     * @param string[] $httpCodes Http codes
+     * @param string   $path                Path
+     * @param string[] $acceptableHTTPCodes Acceptable Http codes
+     * @param array    $options             Options
      */
-    public function __construct($path, array $httpCodes)
-    {
+    public function __construct(
+        $path,
+        array $acceptableHTTPCodes,
+        array $options
+    ) {
         $this->path = $path;
-        $this->httpCodes = $httpCodes;
+        $this->acceptableHTTPCodes = $acceptableHTTPCodes;
+        $this->options = $options;
     }
 
     /**
@@ -55,12 +67,37 @@ class Url
     }
 
     /**
-     * Get HttpCodes
+     * Get Acceptable HttpCodes
      *
      * @return string[] HttpCodes
      */
     public function getAcceptableHttpCodes()
     {
-        return $this->httpCodes;
+        return $this->acceptableHTTPCodes;
+    }
+
+    /**
+     * Get Options
+     *
+     * @return array Options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Get Options
+     *
+     * @param string $option  Option name
+     * @param mixed  $default Default value
+     *
+     * @return mixed Option value
+     */
+    public function getOption($option, $default = null)
+    {
+        return array_key_exists($option, $this->options)
+            ? $this->options[$option]
+            : $default;
     }
 }

@@ -53,12 +53,15 @@ class GuzzleClient implements ClientInterface
     public function getResponseHTTPCode(Url $url)
     {
         try {
-            $result = $this
-                ->client
-                ->get($url->getPath())
+            $verb = $url->getOption('verb', 'GET');
+            $client = $this->client;
+            $result = $client
+                ->send(
+                    $client->createRequest($verb, $url->getPath())
+                )
                 ->getStatusCode();
         } catch (Exception $e) {
-            $result = 1;
+            $result = 400;
         }
 
         return $result;

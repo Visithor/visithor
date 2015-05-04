@@ -5,6 +5,8 @@ defaults:
     # - [200, 301]
     #
     http_codes: [200, 302]
+    options:
+        verb: GET
 
 urls:
     #
@@ -18,4 +20,4 @@ urls:
     # There are some other formats available as well
     #
     - [http://shopery.com, 200]
-    - [http://shopery.com, [200, 302]]
+    - [http://shopery.com, [200, 302], {verb: POST}]
