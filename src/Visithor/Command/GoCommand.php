@@ -103,6 +103,13 @@ class GoCommand extends Command
         $output->writeln('');
         $memory = round($event->getMemory() / 1048576, 2);
         $output->writeln('Time: ' . $event->getDuration() . ' ms, Memory: ' . $memory . 'Mb');
+        $output->writeln('');
+
+        $finalMessage = (0 === $result)
+            ? '<bg=green> OK </bg=green>'
+            : '<bg=red> FAIL </bg=red>';
+
+        $output->writeln($finalMessage);
 
         return $result;
     }
