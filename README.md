@@ -93,6 +93,8 @@ defaults:
     # - [200, 301]
     #
     http_codes: [200, 302]
+    options:
+        verb: GET
 
 urls:
     #
@@ -106,11 +108,27 @@ urls:
     # There are some other formats available as well
     #
     - [http://shopery.com, 200]
+    - [http://shopery.com, 200, {verb: POST}]
     - [http://shopery.com, [200, 302]]
 ```
 
 Your config file can be named `visithor.yml` or `visithor.yml.dist`, being this 
 last one the preferred one.
+
+## Verbs
+
+You can define the preferred verb in the default options block. This value will
+be used as the default verb in all your urls, but you can overwrite this value
+just adding the new verb in the specific url line,
+
+``` yml
+defaults:
+    options:
+        verb: GET
+
+urls:
+    - [http://shopery.com, 200, {verb: POST}]
+```
 
 ## Command
 
