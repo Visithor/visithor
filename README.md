@@ -8,7 +8,7 @@ Visithor
 
 
 Visithor is a PHP library that provides you a simple and painless way of testing 
-your application routes with specific HTTP Codes.
+your application routes with expected HTTP Codes.
 
 Of course this project not pretends to avoid the need of unit, functional or
 behavioral tests, it is only a fast and easy way of ensuring that your routes
