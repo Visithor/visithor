@@ -214,4 +214,112 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * Test url options
+     *
+     * @dataProvider dataUrlOptions
+     */
+    public function testUrlOptions($config, $options)
+    {
+        $urls = $this
+            ->getUrlGeneratorInstance()
+            ->generate($config)
+            ->getUrls();
+
+        /**
+         * @var Url $firstUrl
+         */
+        $firstUrl = reset($urls);
+
+        $this->assertEquals(
+            $options,
+            $firstUrl->getOptions()
+        );
+    }
+
+    /**
+     * Data for testUrlOptions
+     */
+    public function dataUrlOptions()
+    {
+        return [
+            [
+                [
+                    'urls' => [
+                        ['/url'],
+                    ],
+                ],
+                [],
+            ],
+            [
+                [
+                    'urls' => [
+                        ['/url', 200, []],
+                    ],
+                ],
+                [],
+            ],
+            [
+                [
+                    'urls' => [
+                        ['/url', 200, [
+                            'field' => 'value',
+                        ]],
+                    ],
+                ],
+                ['field' => 'value'],
+            ],
+            [
+                [
+                    'defaults' => [
+                        'options' => [
+                            'anotherField' => 'anotherValue',
+                        ],
+                    ],
+                    'urls' => [
+                        ['/url', 200, [
+                            'field' => 'value',
+                        ]],
+                    ],
+                ],
+                [
+                    'field' => 'value',
+                    'anotherField' => 'anotherValue',
+                ],
+            ],
+            [
+                [
+                    'defaults' => [
+                        'options' => [
+                            'field' => 'onevalue',
+                        ],
+                    ],
+                    'urls' => [
+                        ['/url', 200, [
+                            'field' => 'overwrittenvalue',
+                        ]],
+                    ],
+                ],
+                [
+                    'field' => 'overwrittenvalue',
+                ],
+            ],
+            [
+                [
+                    'defaults' => [
+                        'options' => [
+                            'field' => 'onevalue',
+                        ],
+                    ],
+                    'urls' => [
+                        ['/url', 200],
+                    ],
+                ],
+                [
+                    'field' => 'onevalue',
+                ],
+            ],
+        ];
+    }
 }

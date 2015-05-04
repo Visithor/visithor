@@ -52,9 +52,9 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
 
         $urlChain = new UrlChain();
         $urlChain
-            ->addUrl(new Url('', $firstStatusCode))
-            ->addUrl(new Url('', [200]))
-            ->addUrl(new Url('', [200]));
+            ->addUrl(new Url('', $firstStatusCode, []))
+            ->addUrl(new Url('', [200], []))
+            ->addUrl(new Url('', [200], []));
 
         $executor = new Executor(
             $client->reveal()

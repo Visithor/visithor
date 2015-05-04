@@ -61,10 +61,12 @@ class UrlGenerator
     public function generate(array $config)
     {
         $defaultHTTPCodes = $this->getDefaultHTTPCodes($config);
+        $defaultOptions = $this->getDefaultOptions($config);
 
         return $this->createUrlChainFromConfig(
             $config,
-            $defaultHTTPCodes
+            $defaultHTTPCodes,
+            $defaultOptions
         );
     }
 
@@ -94,17 +96,40 @@ class UrlGenerator
     }
 
     /**
+     * Get default options
+     *
+     * @param array $config Configuration
+     *
+     * @return array Default options
+     */
+    protected function getDefaultOptions($config)
+    {
+        $defaultOptions = (
+            isset($config['defaults']) &&
+            is_array($config['defaults']) &&
+            isset($config['defaults']['options']) &&
+            is_array($config['defaults']['options'])
+        )
+            ? $config['defaults']['options']
+            : [];
+
+        return $defaultOptions;
+    }
+
+    /**
      * Given a config array, create an URLChain instance filled with all defined
      * URL instances.
      *
      * @param array    $config           Configuration
      * @param string[] $defaultHTTPCodes Array of HTTP Codes
+     * @param array    $defaultOptions   Default options
      *
      * @return Url[] Array of URL instances
      */
     protected function createUrlChainFromConfig(
         array $config,
-        array $defaultHTTPCodes
+        array $defaultHTTPCodes,
+        array $defaultOptions
     ) {
         $urlChain = $this
             ->urlChainFactory
@@ -121,7 +146,8 @@ class UrlGenerator
             $urlChain->addUrl(
                 $this->getURLInstanceFromConfig(
                     $urlConfig,
-                    $defaultHTTPCodes
+                    $defaultHTTPCodes,
+                    $defaultOptions
                 )
             );
         }
@@ -134,12 +160,14 @@ class UrlGenerator
      *
      * @param mixed    $urlConfig        Url configuration
      * @param string[] $defaultHTTPCodes Array of HTTP Codes
+     * @param array    $defaultOptions   Default options
      *
      * @return URL Url instance
      */
     protected function getUrlInstanceFromConfig(
         $urlConfig,
-        array $defaultHTTPCodes
+        array $defaultHTTPCodes,
+        array $defaultOptions
     ) {
         $url = $this->getUrlPathFromConfig($urlConfig);
 
@@ -148,11 +176,17 @@ class UrlGenerator
             $defaultHTTPCodes
         );
 
+        $urlOptions = $this->getUrlOptionsFromConfig(
+            $urlConfig,
+            $defaultOptions
+        );
+
         return $this
             ->urlFactory
             ->create(
                 $url,
-                $urlHTTPCodes
+                $urlHTTPCodes,
+                $urlOptions
             );
     }
 
@@ -193,5 +227,31 @@ class UrlGenerator
         return is_array($HTTPCodes)
             ? $HTTPCodes
             : [$HTTPCodes];
+    }
+
+    /**
+     * Get url options
+     *
+     * @param mixed $urlConfig      Url configuration
+     * @param array $defaultOptions Default options
+     *
+     * @return string[] Set of HTTP Codes
+     */
+    protected function getUrlOptionsFromConfig(
+        $urlConfig,
+        array $defaultOptions
+    ) {
+        $urlOptions = (
+            is_array($urlConfig) &&
+            isset($urlConfig[2]) &&
+            is_array($urlConfig[2])
+        )
+            ? $urlConfig[2]
+            : [];
+
+        return array_merge(
+            $defaultOptions,
+            $urlOptions
+        );
     }
 }

@@ -23,16 +23,21 @@ class UrlFactory
     /**
      * Create an Url instance
      *
-     * @param string   $path      Path
-     * @param string[] $httpCodes Http codes
+     * @param string   $path                Path
+     * @param string[] $acceptableHTTPCodes Acceptable Http codes
+     * @param array    $options             Options
      *
      * @return Url New url instance
      */
-    public function create($path, array $httpCodes)
-    {
+    public function create(
+        $path,
+        array $acceptableHTTPCodes,
+        array $options
+    ) {
         return new Url(
             $path,
-            $httpCodes
+            $acceptableHTTPCodes,
+            $options
         );
     }
 }
