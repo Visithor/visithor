@@ -115,6 +115,74 @@ urls:
 Your config file can be named `visithor.yml` or `visithor.yml.dist`, being this 
 last one the preferred one.
 
+## Options
+
+You can define a set of options per each url. Each option will be usable for the
+implementations on top of this library
+
+``` yaml
+urls:
+    - [http://shopery.com, 200, {option1: value1, option2: value2}]
+```
+
+You can define these options as well in a global way using the default:options
+path
+
+``` yaml
+defaults:
+    options:
+        option3: value3
+urls:
+    - [http://shopery.com, 200, {option1: value1, option2: value2}]
+```
+
+In this example, Visithor will use the default options array as the base set of
+options for the url, and finally will merge with them the specific set of 
+options defined in each url.
+
+> Merge means that if an option is defined in both places, then the one 
+specifically defined in the url will overwrite the one defined globally
+
+## Profiles
+
+You can group a set of options just creating profiles. A profile is a set of 
+options to be used in a set of urls.
+
+``` yaml
+profiles:
+    admin:
+        option1: value1
+        option2: value2
+urls:
+    - [http://shopery.com, 200, {profile: admin}]
+    - [http://elcodi.io, 200, {profile: admin}]
+```
+
+In this example, Visithor will add all every option inside given profile and 
+will append it in the url definition. So, last example is equivalent to this one
+
+``` yaml
+urls:
+    - [http://shopery.com, 200, {option1: value1, option2: value2}]
+    - [http://elcodi.io, 200, {option1: value1, option2: value2}]
+```
+
+You can assign by default a profile as well, adding it as a global option. Last
+example is equivalent to this one
+
+``` yaml
+defaults:
+    options:
+        profile: admin
+profiles:
+    admin:
+        option1: value1
+        option2: value2
+urls:
+    - [http://shopery.com, 200]
+    - [http://elcodi.io, 200]
+```
+
 ## Verbs
 
 You can define the preferred verb in the default options block. This value will

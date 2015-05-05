@@ -263,9 +263,11 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
             [
                 [
                     'urls' => [
-                        ['/url', 200, [
+                        [
+                            '/url', 200, [
                             'field' => 'value',
-                        ]],
+                        ],
+                        ],
                     ],
                 ],
                 ['field' => 'value'],
@@ -277,14 +279,16 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
                             'anotherField' => 'anotherValue',
                         ],
                     ],
-                    'urls' => [
-                        ['/url', 200, [
+                    'urls'     => [
+                        [
+                            '/url', 200, [
                             'field' => 'value',
-                        ]],
+                        ],
+                        ],
                     ],
                 ],
                 [
-                    'field' => 'value',
+                    'field'        => 'value',
                     'anotherField' => 'anotherValue',
                 ],
             ],
@@ -295,10 +299,12 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
                             'field' => 'onevalue',
                         ],
                     ],
-                    'urls' => [
-                        ['/url', 200, [
+                    'urls'     => [
+                        [
+                            '/url', 200, [
                             'field' => 'overwrittenvalue',
-                        ]],
+                        ],
+                        ],
                     ],
                 ],
                 [
@@ -312,7 +318,7 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
                             'field' => 'onevalue',
                         ],
                     ],
-                    'urls' => [
+                    'urls'     => [
                         ['/url', 200],
                     ],
                 ],
@@ -321,5 +327,192 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * Test url options
+     *
+     * @dataProvider dataProfiles
+     */
+    public function testProfiles($config, $options)
+    {
+        $config = array_merge(
+            [
+                'urls' => [
+                    [
+                        '/url', 200, [
+                        'param1'  => 'value1',
+                        'profile' => 'admin',
+                    ],
+                    ],
+                ],
+            ],
+            $config
+        );
+
+        $urls = $this
+            ->getUrlGeneratorInstance()
+            ->generate($config)
+            ->getUrls();
+
+        /**
+         * @var Url $firstUrl
+         */
+        $firstUrl = reset($urls);
+
+        $this->assertEquals(
+            $options,
+            $firstUrl->getOptions()
+        );
+    }
+
+    /**
+     * Data for testProfiles
+     */
+    public function dataProfiles()
+    {
+        return [
+            [
+                [],
+                [
+                    'param1'  => 'value1',
+                    'profile' => 'admin',
+                ],
+            ],
+            [
+                [
+                    'profiles' => [
+
+                    ],
+                ],
+                [
+                    'param1'  => 'value1',
+                    'profile' => 'admin',
+                ],
+            ],
+            [
+                [
+                    'profiles' => [
+                        'admin' => null,
+                    ],
+                ],
+                [
+                    'param1'  => 'value1',
+                    'profile' => 'admin',
+                ],
+            ],
+            [
+                [
+                    'profiles' => [
+                        'admin' => [],
+                    ],
+                ],
+                [
+                    'param1'  => 'value1',
+                    'profile' => 'admin',
+                ],
+            ],
+            [
+                [
+                    'profiles' => [
+                        'admin' => [
+                            'param2' => 'value2',
+                        ],
+                    ],
+                ],
+                [
+                    'param1'  => 'value1',
+                    'param2'  => 'value2',
+                    'profile' => 'admin',
+                ],
+            ],
+            [
+                [
+                    'profiles' => [
+                        'admin' => [
+                            'param1' => 'anothervalue1',
+                            'param2' => 'value2',
+                            'param3' => 'value3',
+                        ],
+                    ],
+                ],
+                [
+                    'param1'  => 'value1',
+                    'param2'  => 'value2',
+                    'param3'  => 'value3',
+                    'profile' => 'admin',
+                ],
+            ],
+            [
+                [
+                    'defaults' => [
+                        'options' => [
+                            'profile' => 'admin',
+                        ],
+                    ],
+                    'profiles' => [
+                        'admin' => [
+                            'param1' => 'anothervalue1',
+                            'param2' => 'value2',
+                            'param3' => 'value3',
+                        ],
+                    ],
+                ],
+                [
+                    'param1'  => 'value1',
+                    'param2'  => 'value2',
+                    'param3'  => 'value3',
+                    'profile' => 'admin',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Test profile defined in global
+     */
+    public function testProfileDefinedInGlobal()
+    {
+        $config = [
+            'defaults' => [
+                'options' => [
+                    'profile' => 'admin',
+                ],
+            ],
+            'profiles' => [
+                'admin' => [
+                    'param1' => 'anothervalue1',
+                    'param2' => 'value2',
+                    'param3' => 'value3',
+                ],
+            ],
+            'urls'     => [
+                [
+                    '/url', 200, [
+                    'param1' => 'value1',
+                ],
+                ],
+            ],
+        ];
+
+        $urls = $this
+            ->getUrlGeneratorInstance()
+            ->generate($config)
+            ->getUrls();
+
+        /**
+         * @var Url $firstUrl
+         */
+        $firstUrl = reset($urls);
+
+        $this->assertEquals(
+            [
+                'param1'  => 'value1',
+                'param2'  => 'value2',
+                'param3'  => 'value3',
+                'profile' => 'admin',
+            ],
+            $firstUrl->getOptions()
+        );
     }
 }
