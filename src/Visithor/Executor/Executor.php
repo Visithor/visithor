@@ -44,6 +44,18 @@ class Executor implements ExecutorInterface
     }
 
     /**
+     * Build
+     *
+     * @return $this Self object
+     */
+    public function build()
+    {
+        $this
+            ->client
+            ->buildClient();
+    }
+
+    /**
      * Renders the output of the result of executing some urls given a client
      * instance
      *
@@ -63,10 +75,6 @@ class Executor implements ExecutorInterface
     ) {
         $result = 0;
 
-        $this
-            ->client
-            ->buildClient();
-
         foreach ($urlChain->getUrls() as $url) {
             $result = $result | $this->executeUrl(
                     $this->client,
@@ -76,11 +84,19 @@ class Executor implements ExecutorInterface
                 );
         }
 
-        $this
+        return $result;
+    }
+
+    /**
+     * Destroy
+     *
+     * @return $this Self object
+     */
+    public function destroy()
+    {
+        return $this
             ->client
             ->destroyClient();
-
-        return $result;
     }
 
     /**

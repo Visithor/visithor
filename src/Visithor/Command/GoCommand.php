@@ -130,21 +130,26 @@ class GoCommand extends Command
         array $config,
         $format
     ) {
+        $client = new GuzzleClient();
+        $rendererFactory = new RendererFactory();
+        $renderer = $rendererFactory->create($format);
+        $executor = new Executor($client);
+        $executor->build();
+
         $urlGenerator = new UrlGenerator(
             new UrlFactory(),
             new UrlChainFactory()
         );
         $urlChain = $urlGenerator->generate($config);
 
-        $client = new GuzzleClient();
-        $rendererFactory = new RendererFactory();
-        $renderer = $rendererFactory->create($format);
-        $executor = new Executor($client);
-
-        return $executor->execute(
+        $result = $executor->execute(
             $urlChain,
             $renderer,
             $output
         );
+
+        $executor->build();
+
+        return $result;
     }
 }
