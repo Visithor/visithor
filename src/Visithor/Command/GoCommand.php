@@ -70,8 +70,15 @@ class GoCommand extends Command
      *
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    ) {
+        $this->checkEnvironment(
+            $input,
+            $output
+        );
+
         $configPath = rtrim($input->getOption('config'), '/');
         $format = $input->getOption('format');
 
@@ -151,5 +158,30 @@ class GoCommand extends Command
         $executor->build();
 
         return $result;
+    }
+
+    /**
+     * Check environment. If not test, add a notice
+     *
+     * @param InputInterface  $input  Input
+     * @param OutputInterface $output Output
+     *
+     * @return $this Self object
+     */
+    protected function checkEnvironment(
+        InputInterface $input,
+        OutputInterface $output
+    ) {
+        $env = $input
+            ->getParameterOption(
+                ['--env', '-e'],
+                getenv('SYMFONY_ENV') ?: 'dev'
+            );
+
+        if ('test' != $env) {
+            $output->writeln('<bg=red>  </bg=red> <fg=red>Warning, make sure your tests are being run against testing environments</fg=red>');
+        }
+
+        return $this;
     }
 }
