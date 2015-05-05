@@ -16,7 +16,7 @@
         "symfony/console": "~2.1",
         "symfony/stopwatch": "~2.1",
 
-        "guzzlehttp/guzzle": "~5.2"
+        "guzzlehttp/guzzle": ">=4.0.0"
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "1.4.2",
