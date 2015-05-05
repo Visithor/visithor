@@ -142,12 +142,20 @@ class UrlGenerator
             return $urlChain;
         }
 
+        $profiles = (
+            isset($config['profiles']) &&
+            is_array($config['profiles'])
+        )
+            ? $config['profiles']
+            : [];
+
         foreach ($config['urls'] as $urlConfig) {
             $urlChain->addUrl(
                 $this->getURLInstanceFromConfig(
                     $urlConfig,
                     $defaultHTTPCodes,
-                    $defaultOptions
+                    $defaultOptions,
+                    $profiles
                 )
             );
         }
@@ -161,13 +169,15 @@ class UrlGenerator
      * @param mixed    $urlConfig        Url configuration
      * @param string[] $defaultHTTPCodes Array of HTTP Codes
      * @param array    $defaultOptions   Default options
+     * @param array    $profiles         Profiles
      *
      * @return URL Url instance
      */
     protected function getUrlInstanceFromConfig(
         $urlConfig,
         array $defaultHTTPCodes,
-        array $defaultOptions
+        array $defaultOptions,
+        array $profiles
     ) {
         $url = $this->getUrlPathFromConfig($urlConfig);
 
@@ -180,6 +190,17 @@ class UrlGenerator
             $urlConfig,
             $defaultOptions
         );
+
+        if (
+            isset($urlOptions['profile']) &&
+            isset($profiles[$urlOptions['profile']]) &&
+            is_array($profiles[$urlOptions['profile']])
+        ) {
+            $urlOptions = array_merge(
+                $profiles[$urlOptions['profile']],
+                $urlOptions
+            );
+        }
 
         return $this
             ->urlFactory
