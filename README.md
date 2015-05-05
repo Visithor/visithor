@@ -14,6 +14,13 @@ Of course this project not pretends to avoid the need of unit, functional or
 behavioral tests, it is only a fast and easy way of ensuring that your routes
 are still available over the time.
 
+## Frameworks
+
+You can find some packages that will provide you some integration between
+Visithor and them. Check these repositories in order to use specific features.
+
+* [VisithorBundle for Symfony](http://github.com/visithor/VisithorBundle)
+
 ## Tags
 
 * Use last unstable version ( alias of `dev-master` ) to stay in last commit
@@ -72,13 +79,6 @@ You can copy the `.phar` file as a global script
 ``` bash
 $ cp build/visithor.phar /usr/local/bin/visithor
 ```
-
-## Frameworks
-
-You can find some packages that will provide you some integration between
-Visithor and them.
-
-* [VisithorBundle for Symfony](http://github.com/visithor/VisithorBundle)
 
 ## Config
 
