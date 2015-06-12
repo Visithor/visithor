@@ -79,6 +79,7 @@ class GuzzleClient implements ClientInterface
     protected function generateAjaxHeaders()
     {
         return [
+            'future' => true,
             'headers' => [
                 'X-Requested-With' => 'XMLHttpRequest',
                 'X_REQUESTED_WITH' => 'XMLHttpRequest',
@@ -105,7 +106,7 @@ class GuzzleClient implements ClientInterface
             // add header if ajax
             $options = ($url->getOption('ajax', false))
                 ? $this->generateAjaxHeaders()
-                : [];
+                : ['future' => true];
 
             $client = $this->client;
             $result = $client
