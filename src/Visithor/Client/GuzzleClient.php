@@ -48,6 +48,9 @@ class GuzzleClient implements ClientInterface
         if (!defined("CURLOPT_PROTOCOLS")) {
             define("CURLOPT_PROTOCOLS", 181);
         }
+        if (!defined("CURLPROTO_HTTP")) {
+            define("CURLPROTO_HTTP", 1);
+        }
     }
 
     /**
