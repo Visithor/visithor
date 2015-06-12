@@ -34,7 +34,7 @@ class GuzzleClient implements ClientInterface
 
     /**
      * Build client
-     *
+     * @link http://php.net/manual/de/function.curl-setopt.php
      * @return $this Self object
      */
     public function buildClient()
@@ -42,6 +42,11 @@ class GuzzleClient implements ClientInterface
         $this->client = new Client(
             ['redirect.disable' => true]
         );
+
+        // add constant for hhvm
+        if ( !defined( "CURLOPT_PROTOCOLS" ) ) {
+            define( "CURLOPT_PROTOCOLS", 181 );
+        }
     }
 
     /**
@@ -67,6 +72,11 @@ class GuzzleClient implements ClientInterface
         // but we might be expecting a 404 or 500
         catch (RequestException $e) {
             $result = $e->getResponse()->getStatusCode();
+        }
+        // ignore phpUnit error notice for curl on hhvm
+        // @link https://github.com/facebook/hhvm/issues/3737
+        catch (\PHPUnit_Framework_Error_Notice $e) {
+
         }
         // anything other
         catch (Exception $e) {
