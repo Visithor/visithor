@@ -60,7 +60,7 @@ class GuzzleClient implements ClientInterface
                 'X-Requested-With' => 'XMLHttpRequest',
                 'X_REQUESTED_WITH' => 'XMLHttpRequest',
                 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
-            ]
+            ],
         ];
     }
 
@@ -96,7 +96,6 @@ class GuzzleClient implements ClientInterface
         }
         // anything other
         catch (Exception $e) {
-            var_dump($e); die;
             $result = 400;
         }
 
