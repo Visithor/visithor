@@ -64,9 +64,17 @@ class GuzzleClient implements ClientInterface
 
         try {
             $verb = $url->getOption('verb', 'GET');
+
+            // add header if ajax
+            $options = ($url->getOption('ajax', false))
+                ? ['X-Requested-With' => 'XMLHttpRequest']
+                : [];
+
+            // get Guzzle options
+
             $client = $this->client;
             $result = $client
-                ->$verb($url->getPath())
+                ->$verb($url->getPath(), $options)
                 ->getStatusCode();
         }
         // Guzzle considers that as an error,
@@ -76,7 +84,6 @@ class GuzzleClient implements ClientInterface
         }
         // anything other
         catch (Exception $e) {
-            var_dump($e); die;
             $result = 400;
         }
 

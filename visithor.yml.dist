@@ -14,10 +14,10 @@ urls:
     # as the valid one
     #
     - http://google.es
-    - http://elcodi.io
+    - http://google.com
     
     #
     # There are some other formats available as well
     #
-    - [http://shopery.com, 200]
-    - [http://shopery.com, [200, 302], {verb: POST}]
+    - [https://github.com/t1gor/visithor/tree/dev, 200]
+    - [https://github.com/t1gor/visithor/tree/dev, [404], {verb: POST}]
