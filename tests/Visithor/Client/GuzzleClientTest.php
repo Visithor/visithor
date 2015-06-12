@@ -14,7 +14,6 @@
 namespace Mmoreram\tests\Visithor\Client;
 
 use PHPUnit_Framework_TestCase;
-
 use Visithor\Client\GuzzleClient;
 use Visithor\Model\Url;
 
@@ -24,23 +23,43 @@ use Visithor\Model\Url;
 class GuzzleClientTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test client
+     * @var \Visithor\Client\GuzzleClient
      */
-    public function testClient()
+    protected $client;
+
+    public function setUp()
     {
-        $client = new GuzzleClient();
-        $client->buildClient();
-        $url = new Url(
-            'http://google.es',
-            [200],
-            []
-        );
+        $this->client = new GuzzleClient();
+        $this->client->buildClient();
+    }
 
-        $result = $client->getResponseHTTPCode($url);
+    public function tearDown()
+    {
+        $this->client = null;
+    }
 
-        $this->assertEquals(
-            200,
-            $result
+    /**
+     * @dataProvider generateRequests
+     * @param string $url
+     * @param int    $code
+     */
+    public function testClient( $url, $code )
+    {
+        $url = new Url($url, [$code]);
+        $result = $this->client->getResponseHTTPCode($url);
+        $this->assertEquals($code, $result);
+    }
+
+    /**
+     * Generate URL - code pares to test the client
+     * @todo add a url for 500
+     * @return array
+     */
+    public function generateRequests()
+    {
+        return array(
+            array( 'http://google.es', 200 ),
+            array( 'http://example.com/404', 404 ),
         );
     }
 }

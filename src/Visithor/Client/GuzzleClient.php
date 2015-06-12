@@ -16,6 +16,7 @@ namespace Visithor\Client;
 use Exception;
 use GuzzleHttp\Client;
 
+use GuzzleHttp\Exception\RequestException;
 use Visithor\Client\Interfaces\ClientInterface;
 use Visithor\Model\Url;
 
@@ -52,15 +53,23 @@ class GuzzleClient implements ClientInterface
      */
     public function getResponseHTTPCode(Url $url)
     {
+        // presume we don't know what happened
+        $result = 000;
+
         try {
             $verb = $url->getOption('verb', 'GET');
             $client = $this->client;
             $result = $client
-                ->send(
-                    $client->createRequest($verb, $url->getPath())
-                )
+                ->request($verb, $url->getPath())
                 ->getStatusCode();
-        } catch (Exception $e) {
+        }
+        // Guzzle considers that as an error,
+        // but we might be expecting a 404 or 500
+        catch (RequestException $e) {
+            $result = $e->getResponse()->getStatusCode();
+        }
+        // anything other
+        catch (Exception $e) {
             $result = 400;
         }
 
