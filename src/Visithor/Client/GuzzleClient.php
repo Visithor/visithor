@@ -60,7 +60,7 @@ class GuzzleClient implements ClientInterface
             $verb = $url->getOption('verb', 'GET');
             $client = $this->client;
             $result = $client
-                ->request($verb, $url->getPath())
+                ->$verb($url->getPath())
                 ->getStatusCode();
         }
         // Guzzle considers that as an error,
