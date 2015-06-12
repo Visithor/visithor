@@ -49,7 +49,7 @@ class Url
     public function __construct(
         $path,
         array $acceptableHTTPCodes,
-        array $options = array()
+        array $options = []
     ) {
         $this->path = $path;
         $this->acceptableHTTPCodes = $acceptableHTTPCodes;

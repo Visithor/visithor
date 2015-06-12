@@ -15,8 +15,8 @@ namespace Visithor\Client;
 
 use Exception;
 use GuzzleHttp\Client;
-
 use GuzzleHttp\Exception\RequestException;
+
 use Visithor\Client\Interfaces\ClientInterface;
 use Visithor\Model\Url;
 
@@ -45,9 +45,20 @@ class GuzzleClient implements ClientInterface
         );
 
         // add constant for hhvm
-        if ( !defined( "CURLOPT_PROTOCOLS" ) ) {
-            define( "CURLOPT_PROTOCOLS", 181 );
+        if (!defined("CURLOPT_PROTOCOLS")) {
+            define("CURLOPT_PROTOCOLS", 181);
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function generateAjaxHeaders()
+    {
+        return [
+            'X-Requested-With' => 'XMLHttpRequest',
+            'X_REQUESTED_WITH' => 'XMLHttpRequest',
+        ];
     }
 
     /**
@@ -67,7 +78,7 @@ class GuzzleClient implements ClientInterface
 
             // add header if ajax
             $options = ($url->getOption('ajax', false))
-                ? ['X-Requested-With' => 'XMLHttpRequest']
+                ? $this->generateAjaxHeaders()
                 : [];
 
             // get Guzzle options

@@ -19,5 +19,7 @@ urls:
     #
     # There are some other formats available as well
     #
-    - [https://github.com/t1gor/visithor/tree/dev, 200]
-    - [https://github.com/t1gor/visithor/tree/dev, [404], {verb: POST}]
+    - [http://example.com/ok, 200]
+    - [http://example.com/404, [404], {verb: POST}]
+    - [http://example.com/403-ajax-only, [403]]
+    - [http://example.com/403-ajax-only, [200], {ajax: true}]

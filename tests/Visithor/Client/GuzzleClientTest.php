@@ -43,7 +43,7 @@ class GuzzleClientTest extends PHPUnit_Framework_TestCase
      * @param string $url
      * @param int    $code
      */
-    public function testClient( $url, $code )
+    public function testClient($url, $code)
     {
         $url = new Url($url, [$code]);
         $result = $this->client->getResponseHTTPCode($url);
@@ -57,9 +57,9 @@ class GuzzleClientTest extends PHPUnit_Framework_TestCase
      */
     public function generateRequests()
     {
-        return array(
-            array( 'http://google.es', 200 ),
-            array( 'http://example.com/404', 404 ),
-        );
+        return [
+            [ 'http://google.es', 200 ],
+            [ 'http://example.com/404', 404 ],
+        ];
     }
 }
