@@ -100,7 +100,6 @@ class GuzzleClient implements ClientInterface
         // anything other
         catch (Exception $e) {
             var_dump($e->getMessage()); die;
-            $result = 400;
         }
 
         return $result;
