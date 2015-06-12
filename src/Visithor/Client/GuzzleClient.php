@@ -33,6 +33,27 @@ class GuzzleClient implements ClientInterface
     protected $client;
 
     /**
+     * A list of CURL protocols to define for hhvm
+     * @link http://php.net/manual/ru/function.curl-setopt.php
+     * @var array
+     */
+    protected $curlProtocols = [
+        "CURLPROTO_HTTP" => 1,
+        "CURLPROTO_HTTPS" => 2,
+        "CURLPROTO_FTP" => 4,
+        "CURLPROTO_FTPS" => 8,
+        "CURLPROTO_SCP" => 16,
+        "CURLPROTO_SFTP" => 32,
+        "CURLPROTO_TELNET" => 64,
+        "CURLPROTO_LDAP" => 128,
+        "CURLPROTO_LDAPS" => 256,
+        "CURLPROTO_DICT" => 512,
+        "CURLPROTO_FILE" => 1024,
+        "CURLPROTO_TFTP" => 2048,
+        "CURLPROTO_ALL" => -1
+    ];
+
+    /**
      * Build client
      * @link http://php.net/manual/de/function.curl-setopt.php
      * @link https://github.com/facebook/hhvm/issues/3737
@@ -45,12 +66,11 @@ class GuzzleClient implements ClientInterface
         );
 
         // add constant for hhvm
-        if (!defined("CURLOPT_PROTOCOLS")) {
-            define("CURLOPT_PROTOCOLS", 181);
-        }
-        if (!defined("CURLPROTO_HTTP")) {
-            define("CURLPROTO_HTTP", 1);
-        }
+        array_walk($this->curlProtocols, function( $item, $key ) {
+            if (!defined($key)) {
+                define($key, $item);
+            }
+        });
     }
 
     /**
