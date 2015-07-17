@@ -17,6 +17,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+use Visithor\Visithor;
 use Visithor\Client\Interfaces\ClientInterface;
 use Visithor\Model\Url;
 
@@ -33,27 +34,6 @@ class GuzzleClient implements ClientInterface
     protected $client;
 
     /**
-     * A list of CURL protocols to define for hhvm
-     * @link http://php.net/manual/ru/function.curl-setopt.php
-     * @var array
-     */
-    protected $curlProtocols = [
-        "CURLPROTO_HTTP" => 1,
-        "CURLPROTO_HTTPS" => 2,
-        "CURLPROTO_FTP" => 4,
-        "CURLPROTO_FTPS" => 8,
-        "CURLPROTO_SCP" => 16,
-        "CURLPROTO_SFTP" => 32,
-        "CURLPROTO_TELNET" => 64,
-        "CURLPROTO_LDAP" => 128,
-        "CURLPROTO_LDAPS" => 256,
-        "CURLPROTO_DICT" => 512,
-        "CURLPROTO_FILE" => 1024,
-        "CURLPROTO_TFTP" => 2048,
-        "CURLPROTO_ALL" => -1
-    ];
-
-    /**
      * Build client
      * @link http://php.net/manual/de/function.curl-setopt.php
      * @link https://github.com/facebook/hhvm/issues/3737
@@ -64,13 +44,6 @@ class GuzzleClient implements ClientInterface
         $this->client = new Client(
             ['redirect.disable' => true]
         );
-
-        // add constant for hhvm
-        array_walk($this->curlProtocols, function( $item, $key ) {
-            if (!defined($key)) {
-                define($key, $item);
-            }
-        });
     }
 
     /**
@@ -80,19 +53,14 @@ class GuzzleClient implements ClientInterface
     {
         return [
             'future' => true,
-            'headers' => [
-                'X-Requested-With' => 'XMLHttpRequest',
-                'X_REQUESTED_WITH' => 'XMLHttpRequest',
-                'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
-            ],
+            'headers' => Visithor::$ajaxHeaders
         ];
     }
 
     /**
      * Get the HTTP Code Response given an URL instance
-     *
      * @param Url $url Url
-     *
+     * @link http://ringphp.readthedocs.org/en/latest/client_handlers.html#built-in-handlers
      * @return int Response HTTP Code
      */
     public function getResponseHTTPCode(Url $url)
@@ -103,13 +71,25 @@ class GuzzleClient implements ClientInterface
         try {
             $verb = $url->getOption('verb', 'GET');
 
-            // add header if ajax
-            $options = ($url->getOption('ajax', false))
-                ? $this->generateAjaxHeaders()
-                : ['future' => true];
+            // prepare context
+            $streamContext = [
+                'http' => [
+                    // set verb
+                    'method' => $verb
+                ]
+            ];
 
-            $client = $this->client;
-            $result = $client
+            // is it ajax call?
+            if ($url->getOption('ajax')) {
+                $streamContext['http']['header'] = Visithor::$ajaxHeaders;
+            }
+
+            // force using streams
+            $options['config'] = [
+                'stream_context' => $streamContext
+            ];
+
+            $result = $this->client
                 ->$verb($url->getPath(), $options)
                 ->getStatusCode();
         }

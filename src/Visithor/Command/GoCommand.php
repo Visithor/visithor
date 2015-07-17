@@ -21,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 use Visithor\Client\GuzzleClient;
+use Visithor\Client\StreamClient;
 use Visithor\Executor\Executor;
 use Visithor\Factory\UrlChainFactory;
 use Visithor\Factory\UrlFactory;
@@ -137,7 +138,16 @@ class GoCommand extends Command
         array $config,
         $format
     ) {
-        $client = new GuzzleClient();
+        // check client in config
+        if (isset($config['defaults']['client']) && class_exists($config['defaults']['client'])) {
+            $clientClass = $config['defaults']['client'];
+            $client = new $clientClass();
+        }
+        // default to Guzzle
+        else {
+            $client = new GuzzleClient();
+        }
+
         $rendererFactory = new RendererFactory();
         $renderer = $rendererFactory->create($format);
         $executor = new Executor($client);
