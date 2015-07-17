@@ -14,10 +14,12 @@ urls:
     # as the valid one
     #
     - http://google.es
-    - http://elcodi.io
+    - http://google.com
     
     #
     # There are some other formats available as well
     #
-    - [http://shopery.com, 200]
-    - [http://shopery.com, [200, 302], {verb: POST}]
+    - [http://example.com/ok, 200]
+    - [http://example.com/404, [404], {verb: POST}]
+    - [http://example.com/403-ajax-only, [403]]
+    - [http://example.com/403-ajax-only, [200], {ajax: true}]

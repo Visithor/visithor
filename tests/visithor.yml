@@ -1,0 +1,31 @@
+defaults:
+    #
+    # Default client - stream one. Classname used in config.
+    #
+    client: StreamClient
+
+    #
+    # Default acceptable http codes
+    #
+    http_codes: [200, 302]
+
+    #
+    # HEAD is used to avoid overhead
+    #
+    options:
+        verb: HEAD
+
+urls:
+    #
+    # All good (default codes used)
+    #
+    - http://google.es
+    - http://google.com
+
+    #
+    # There are some other formats available as well
+    #
+    - [http://example.com, 200]
+    - [http://example.com/404, [404], {verb: POST}]
+    - [http://example.com/403-ajax-only, 404]
+    - [http://example.com/403-ajax-only, 200, {ajax: true}]

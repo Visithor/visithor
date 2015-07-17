@@ -7,6 +7,9 @@ php:
     - hhvm
     - 7.0
 
+before_install:
+  - composer selfupdate
+
 install:
     - composer install --prefer-source --no-interaction
 

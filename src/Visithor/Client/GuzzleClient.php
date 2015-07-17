@@ -15,7 +15,9 @@ namespace Visithor\Client;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
+use Visithor\Visithor;
 use Visithor\Client\Interfaces\ClientInterface;
 use Visithor\Model\Url;
 
@@ -33,7 +35,8 @@ class GuzzleClient implements ClientInterface
 
     /**
      * Build client
-     *
+     * @link http://php.net/manual/de/function.curl-setopt.php
+     * @link https://github.com/facebook/hhvm/issues/3737
      * @return $this Self object
      */
     public function buildClient()
@@ -44,23 +47,59 @@ class GuzzleClient implements ClientInterface
     }
 
     /**
+     * @return array
+     */
+    protected function generateAjaxHeaders()
+    {
+        return [
+            'future' => true,
+            'headers' => Visithor::$ajaxHeaders
+        ];
+    }
+
+    /**
      * Get the HTTP Code Response given an URL instance
-     *
      * @param Url $url Url
-     *
+     * @link http://ringphp.readthedocs.org/en/latest/client_handlers.html#built-in-handlers
      * @return int Response HTTP Code
      */
     public function getResponseHTTPCode(Url $url)
     {
+        // presume we don't know what happened
+        $result = 000;
+
         try {
             $verb = $url->getOption('verb', 'GET');
-            $client = $this->client;
-            $result = $client
-                ->send(
-                    $client->createRequest($verb, $url->getPath())
-                )
+
+            // prepare context
+            $streamContext = [
+                'http' => [
+                    // set verb
+                    'method' => $verb
+                ]
+            ];
+
+            // is it ajax call?
+            if ($url->getOption('ajax')) {
+                $streamContext['http']['header'] = Visithor::$ajaxHeaders;
+            }
+
+            // force using streams
+            $options['config'] = [
+                'stream_context' => $streamContext
+            ];
+
+            $result = $this->client
+                ->$verb($url->getPath(), $options)
                 ->getStatusCode();
-        } catch (Exception $e) {
+        }
+        // Guzzle considers that as an error,
+        // but we might be expecting a 404 or 500
+        catch (RequestException $e) {
+            $result = $e->getResponse()->getStatusCode();
+        }
+        // anything other
+        catch (Exception $e) {
             $result = 400;
         }
 

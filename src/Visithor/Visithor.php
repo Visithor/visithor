@@ -45,4 +45,14 @@ class Visithor
      * Renderer type pretty
      */
     const RENDERER_TYPE_PRETTY = 'pretty';
+
+    /**
+     * Headers sent to check for ajax call
+     * @var array
+     */
+    public static $ajaxHeaders = [
+        'X-Requested-With' => 'XMLHttpRequest',
+        'X_REQUESTED_WITH' => 'XMLHttpRequest',
+        'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
+    ];
 }

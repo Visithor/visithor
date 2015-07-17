@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Visithor package.
  *
  * For the full copyright and license information, please view the LICENSE
@@ -8,34 +8,39 @@
  *
  * Feel free to edit as you please, and have fun.
  *
- * @author Marc Morera <yuhu@mmoreram.com>
+ * @author Igor Timoshenkov <igor.timoshenkov@gmail.com>
  */
 
 namespace Mmoreram\tests\Visithor\Client;
 
 use PHPUnit_Framework_TestCase;
-use Visithor\Client\GuzzleClient;
+use Visithor\Client\StreamClient;
 use Visithor\Model\Url;
 
 /**
  * Class GuzzleClientTest
  */
-class GuzzleClientTest extends PHPUnit_Framework_TestCase
+class StreamClientTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Visithor\Client\GuzzleClient
+     * @var \Visithor\Client\Interfaces\ClientInterface
      */
     protected $client;
 
-    public function setUp()
-    {
-        $this->client = new GuzzleClient();
+    /**
+     * Prepare
+     */
+    public function setUp() {
+        $this->client = new StreamClient();
         $this->client->buildClient();
     }
 
-    public function tearDown()
-    {
+    /**
+     * Clean-up
+     */
+    public function tearDown() {
         $this->client = null;
+        unset($this->client);
     }
 
     /**
@@ -52,13 +57,12 @@ class GuzzleClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * Generate URL - code pares to test the client
-     * @todo add a url for 500
      * @return array
      */
     public function generateRequests()
     {
         return [
-            [ 'http://google.es', 200 ],
+            [ 'http://google.es', 301 ],
             [ 'http://example.com/404', 404 ],
         ];
     }

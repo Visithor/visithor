@@ -235,8 +235,8 @@ EOF;
             ->name('*.php')
             ->exclude('Tests')
             ->in(realpath($vendorPath . 'symfony/'))
-            ->in(realpath($vendorPath . 'guzzlehttp/'))
-            ->in(realpath($vendorPath . 'react/'));
+            ->in(realpath($vendorPath . 'psr/'))
+            ->in(realpath($vendorPath . 'guzzlehttp/'));
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
