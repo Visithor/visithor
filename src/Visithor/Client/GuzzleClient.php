@@ -57,7 +57,9 @@ class GuzzleClient implements ClientInterface
             $client = $this->client;
             $result = $client
                 ->send(
-                    $client->createRequest($verb, $url->getPath())
+                    class_exists('\GuzzleHttp\Psr7\Request')
+                        ? new \GuzzleHttp\Psr7\Request($verb, $url->getPath())
+                        : $client->createRequest($verb, $url->getPath())
                 )
                 ->getStatusCode();
         } catch (Exception $e) {
