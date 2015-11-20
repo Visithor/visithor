@@ -13,11 +13,11 @@ urls:
     # By default, is there is no specified HTTP Code, then default one is used
     # as the valid one
     #
-    - http://google.es
+    - [http://google.es, 301]
     - http://elcodi.io
-    
+
     #
     # There are some other formats available as well
     #
-    - [http://shopery.com, 200]
-    - [http://shopery.com, [200, 302], {verb: POST}]
+    - [http://www.google.com, 302]
+    - [http://shopery.com, [200, 301], {verb: POST}]

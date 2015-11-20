@@ -32,14 +32,14 @@ class GuzzleClientTest extends PHPUnit_Framework_TestCase
         $client->buildClient();
         $url = new Url(
             'http://google.es',
-            [200],
+            [301],
             []
         );
 
         $result = $client->getResponseHTTPCode($url);
 
         $this->assertEquals(
-            200,
+            301,
             $result
         );
     }
