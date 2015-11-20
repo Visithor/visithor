@@ -38,8 +38,19 @@ class GuzzleClient implements ClientInterface
      */
     public function buildClient()
     {
+        //Handle redirect configuration for guzzle 6
+        if (class_exists('\GuzzleHttp\Psr7\Request')) {
+            $options = ['allow_redirects' => false];
+        } else {
+            $options = [
+                'defaults' => [
+                    'allow_redirects' => false
+                ]
+            ];
+        }
+
         $this->client = new Client(
-            ['redirect.disable' => true]
+            $options
         );
     }
 
