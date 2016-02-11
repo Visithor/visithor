@@ -198,6 +198,16 @@ urls:
     - [http://shopery.com, 200, {verb: POST}]
 ```
 
+## Headers
+
+You can define the preferred header in the default options block. This value will
+be used as the default headers in all your urls, but you can overwrite this value
+just adding the new headers in the specific url line,
+
+```yml
+- [http://www.thefork.com, [302], {verb: POST, headers: {user-agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)"}}]
+```
+
 ## Command
 
 To execute the visithor you need to use a pre-built command called 
