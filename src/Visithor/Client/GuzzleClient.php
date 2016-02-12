@@ -36,7 +36,7 @@ class GuzzleClient implements ClientInterface
      *
      * @return $this Self object
      */
-    public function buildClient()
+    public function buildClient($client = null)
     {
         //Handle redirect configuration for guzzle 6
         if (class_exists('\GuzzleHttp\Psr7\Request')) {
@@ -44,12 +44,12 @@ class GuzzleClient implements ClientInterface
         } else {
             $options = [
                 'defaults' => [
-                    'allow_redirects' => false
-                ]
+                    'allow_redirects' => false,
+                ],
             ];
         }
 
-        $this->client = new Client(
+        $this->client = $client ?: new Client(
             $options
         );
     }
@@ -65,14 +65,15 @@ class GuzzleClient implements ClientInterface
     {
         try {
             $verb = $url->getOption('verb', 'GET');
+            $headers = $url->getOption('headers', []);
             $client = $this->client;
             $result = $client
-                ->send(
-                    class_exists('\GuzzleHttp\Psr7\Request')
-                        ? new \GuzzleHttp\Psr7\Request($verb, $url->getPath())
-                        : $client->createRequest($verb, $url->getPath())
-                )
-                ->getStatusCode();
+                 ->send(
+                     class_exists('\GuzzleHttp\Psr7\Request')
+                        ? new \GuzzleHttp\Psr7\Request($verb, $url->getPath(), $headers)
+                        : $client->createRequest($verb, $url->getPath(), ['headers' => $headers])
+                 )
+                 ->getStatusCode();
         } catch (Exception $e) {
             $result = 400;
         }

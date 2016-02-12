@@ -14,6 +14,7 @@
 namespace Visithor\Client\Interfaces;
 
 use Visithor\Model\Url;
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 
 /**
  * Interface ClientInterface
@@ -23,9 +24,11 @@ interface ClientInterface
     /**
      * Build client
      *
+     * @param HttpClientInterface $client The Guzzle Http Client
+     *
      * @return $this Self object
      */
-    public function buildClient();
+    public function buildClient($client = null);
 
     /**
      * Get the HTTP Code Response given an URL instance

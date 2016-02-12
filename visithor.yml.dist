@@ -21,3 +21,5 @@ urls:
     #
     - [http://www.google.com, 302]
     - [http://shopery.com, [200, 301], {verb: POST}]
+    # Headers Mobile user-agent
+    - [http://www.thefork.com, [302], {verb: POST, headers: {user-agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)"}}]
