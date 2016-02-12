@@ -34,10 +34,8 @@ class GuzzleClientTest extends PHPUnit_Framework_TestCase
             'http://google.es',
             [301],
             [
-                'headers' =>
-                    [
-                        'User-Agent' =>
-                        'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)',
+                'headers' => [
+                        'User-Agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)',
                     ],
             ]
         );
@@ -77,7 +75,7 @@ class GuzzleClientTest extends PHPUnit_Framework_TestCase
                     );
 
                     return new \GuzzleHttp\Psr7\Response(301);
-                }
+                },
             ]);
         }
 

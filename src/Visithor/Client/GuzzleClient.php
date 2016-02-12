@@ -44,8 +44,8 @@ class GuzzleClient implements ClientInterface
         } else {
             $options = [
                 'defaults' => [
-                    'allow_redirects' => false
-                ]
+                    'allow_redirects' => false,
+                ],
             ];
         }
 
